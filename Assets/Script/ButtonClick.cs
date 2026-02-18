@@ -5,9 +5,13 @@ using System.Collections;
 public class ButtonClick : MonoBehaviour
 {
     public SpriteRenderer cat;
-    public float time = 2.0f;
+    public float time = 0.5f;
     public Button button;
     public AudioSource audio;
+
+    public RectTransform buttonRect;
+    public RectTransform[] positions;
+    private int lastIndex = -1;
 
     void Start()
     {
@@ -18,6 +22,7 @@ public class ButtonClick : MonoBehaviour
 
     public void Presionado()
     {
+        MoverBoton();
         Debug.Log("*Miaulla");
         audio.Play();
         StartCoroutine(Aparece(time));
@@ -28,5 +33,21 @@ public class ButtonClick : MonoBehaviour
         cat.enabled = true;
         yield return new WaitForSeconds(segundos);
         cat.enabled = false;
+    }
+
+    void MoverBoton()
+    {
+        if (positions.Length == 0) return;
+
+        int index = Random.Range(0, positions.Length);
+
+        while (index == lastIndex && positions.Length > 1)
+        {
+            index = Random.Range(0, positions.Length);
+        }
+
+        lastIndex = index;
+
+        buttonRect.anchoredPosition = positions[index].anchoredPosition;
     }
 }
