@@ -13,6 +13,8 @@ public class ButtonClick : MonoBehaviour
     public RectTransform[] positions;
     private int lastIndex = -1;
 
+    public GameManager gameManager;
+
     void Start()
     {
         Button btn = button.GetComponent<Button>();
@@ -26,6 +28,8 @@ public class ButtonClick : MonoBehaviour
         Debug.Log("*Miaulla");
         audio.Play();
         StartCoroutine(Aparece(time));
+
+        gameManager.AddPoint();
     }
 
     IEnumerator Aparece(float segundos)
