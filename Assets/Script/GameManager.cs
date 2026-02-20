@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text timerText;
 
     public Button button;
+    public Button reinicioButton;
 
     private int score = 0;
     private float timeLeft;
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         timeLeft = gameTime;
+        reinicioButton.gameObject.SetActive(false);
 
         scoreText.text = "Score: 0";
         timerText.text = "Time: " + gameTime.ToString("F2");
@@ -33,7 +35,8 @@ public class GameManager : MonoBehaviour
         {
             timeLeft = 0;
             gameRunning = false;
-            button.interactable = false;
+            button.gameObject.SetActive(false);
+            reinicioButton.gameObject.SetActive(true);
         }
 
         timerText.text = "Time: " + timeLeft.ToString("F2");

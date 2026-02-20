@@ -7,7 +7,7 @@ public class ButtonClick : MonoBehaviour
     public SpriteRenderer cat;
     public float time = 0.5f;
     public Button button;
-    public AudioSource audio;
+    public AudioSource audioMau;
 
     public RectTransform buttonRect;
     public RectTransform[] positions;
@@ -26,7 +26,7 @@ public class ButtonClick : MonoBehaviour
     {
         MoverBoton();
         Debug.Log("*Miaulla");
-        audio.Play();
+        audioMau.Play();
         StartCoroutine(Aparece(time));
 
         gameManager.AddPoint();
