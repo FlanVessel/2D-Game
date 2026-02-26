@@ -19,7 +19,7 @@ public class ButtonClick : MonoBehaviour
     {
         Button btn = button.GetComponent<Button>();
         btn.onClick.AddListener(Presionado);
-        cat.enabled = false;
+        //cat.enabled = false;
     }
 
     public void Presionado()
@@ -27,17 +27,17 @@ public class ButtonClick : MonoBehaviour
         MoverBoton();
         Debug.Log("*Miaulla");
         audioMau.Play();
-        StartCoroutine(Aparece(time));
+        //StartCoroutine(Aparece(time));
 
-        gameManager.AddPoint();
+        gameManager.ClickButton();
     }
 
-    IEnumerator Aparece(float segundos)
-    {
-        cat.enabled = true;
-        yield return new WaitForSeconds(segundos);
-        cat.enabled = false;
-    }
+    // IEnumerator Aparece(float segundos)
+    // {
+    //     cat.enabled = true;
+    //     yield return new WaitForSeconds(segundos);
+    //     cat.enabled = false;
+    // }
 
     void MoverBoton()
     {

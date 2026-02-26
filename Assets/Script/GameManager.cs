@@ -4,51 +4,65 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public float gameTime = 10f;
-
+    public Button clickButton;
     public TMP_Text scoreText;
     public TMP_Text timerText;
 
-    public Button button;
-    public Button reinicioButton;
+    public GameObject endPanel;
+    public TMP_InputField nameInput;
 
-    private int score = 0;
-    private float timeLeft;
-    private bool gameRunning = false;
+    public ScoreManager scoreManager;
+    public TimerManager timer;
+    public ProfileManager profileManager;
+    public RankingUI rankingUI;
 
     void Start()
     {
-        timeLeft = gameTime;
-        reinicioButton.gameObject.SetActive(false);
-
-        scoreText.text = "Score: 0";
-        timerText.text = "Time: " + gameTime.ToString("F2");
+        timer.OnTimeEnd += EndGame;
+        endPanel.SetActive(false);
     }
 
     void Update()
     {
-        if (!gameRunning) return;
-
-        timeLeft -= Time.deltaTime;
-
-        if (timeLeft <= 0)
-        {
-            timeLeft = 0;
-            gameRunning = false;
-            button.gameObject.SetActive(false);
-            reinicioButton.gameObject.SetActive(true);
-        }
-
-        timerText.text = "Time: " + timeLeft.ToString("F2");
+        scoreText.text = "Score: " + scoreManager.Score;
+        timerText.text = "Time: " + timer.GetTimeLeft().ToString("F2");
     }
 
-    public void AddPoint()
+    public void ClickButton()
     {
-        if (!gameRunning)
-            gameRunning = true;
+        if (profileManager.CurrentProfile == null)
+        {
+            Debug.Log("No hay perfil seleccionado");
+            return;
+        }
 
-        score++;
-        scoreText.text = "Score: " + score;
+        if(!timer.enabled)
+            timer.StartTimer();
+
+        scoreManager.AddPoint();
+    }
+
+    void EndGame()
+    {
+        clickButton.gameObject.SetActive(false);
+        endPanel.SetActive(true);
+
+        profileManager.AddScore(scoreManager.Score);
+        rankingUI.Show(profileManager.GetProfiles());
+    }
+
+    public void CreateProfile()
+    {
+        string name = nameInput.text == "" ? "Player" : nameInput.text;
+        profileManager.CreateProfile(name);
+        RestartGame();
+    }
+    void RestartGame()
+    {
+        scoreManager.ResetScore();
+        clickButton.gameObject.SetActive(true);
+        endPanel.SetActive(false);
+        timer.StartTimer();
     }
 
 }
